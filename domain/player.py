@@ -1,3 +1,5 @@
+import math
+
 class Player:
 
     def __init__(self, name):
@@ -8,16 +10,15 @@ class Player:
     def get_name(self):
         return self.name
 
-    def pass_round(self, round, score, wins, bonus=0):
+    def pass_round(self, round, wins, bonus=0):
         '''
         round: ronda actual
-        score: puntuación total de la ronda
         wins: bazas ganadas en la ronda
         bonus: bonus total de la ronda (0 por defecto)
         '''
-        self.rounds[round]["score"] = score
         self.rounds[round]["wins"] = wins
         self.rounds[round]["bonus"] = bonus
+        self.rounds[round]["score"] = math.sqrt((wins - self.rounds[round]["bet"]) ** 2)
     
     def bets(self, bet, round):
         '''
@@ -32,6 +33,6 @@ class Player:
         '''
         score = 0
         for round in self.rounds:
-            score += round["score"] + round["bonus"]
+            score += self.rounds[round]["score"] + self.rounds[round]["bonus"]
         
         return score
