@@ -1,3 +1,5 @@
+from typing import Union
+
 from domain.player import Player
 
 class Scores:
@@ -6,6 +8,7 @@ class Scores:
         '''
         Players: Lista con todos los jugadores de la partida(2-6)
         Rounds: Número de rondas de la partida (10 por defecto)
+
         '''
         self.players = []
         for player in players:
@@ -15,20 +18,23 @@ class Scores:
     def get_rounds(self):
         '''
         Obtiene el rango de rondas actual
+
         '''
         return self.rounds
 
     def pass_round(self):
         '''
         Incrementa la ronda actual si no pasa del límite
+
         '''
         if self.rounds[0] != self.rounds[1]:
             self.rounds[0] += 1
     
-    def get_player(self, player_name):
+    def get_player(self, player_name) -> Union[Player, None]:
         '''
-        Obtiene un jugador según el nombre
+        Obtiene un jugador según el nombre.
         Devuelve None si no existe
+
         '''
         for player in self.players:
             if player.get_name() == player_name:
@@ -37,6 +43,10 @@ class Scores:
         return None
 
     def finish_game(self):
+        '''
+        Devuelve un diccionario con todas las puntuaciones
+        de la partida de cada jugador.
+        '''
         res = {}
         for player in self.players:
             res[player.get_name()] = player.get_total_score()
