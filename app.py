@@ -1,10 +1,18 @@
+from tkinter import *
+
 from domain.scores import Scores
 
-jugadores = ["Toni","Laura","Pere"]
-rondas = 3
+# Declaración ventana
+ventana = Tk()
+ventana.geometry("1600x900")
 
-tabla_puntuaciones = Scores(jugadores, rondas)
-rounds = tabla_puntuaciones.get_rounds()
-tabla_puntuaciones.pass_round()
-rounds = tabla_puntuaciones.get_rounds()
-tabla_puntuaciones.get_player("Toni")
+# WIDGETS
+# Entradas
+ent_ronda_actual = Entry(ventana)
+
+# Lanzamiento ventana
+ventana.title("Skull King")
+ventana.iconbitmap("./assets/img/skull_pirate.ico")
+
+print("OK!")
+ventana.mainloop()
