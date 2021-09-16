@@ -1,3 +1,4 @@
+from tkinter.constants import NO
 from player import Player
 
 class Card:
@@ -22,10 +23,15 @@ class Card:
 
 
 class Escape(Card):
-    pass
+
+    def victory(self, to_compare: Card):
+        if to_compare.get_type() != self.get_type():
+            return False
+        return True
 
 
 class Color(Card):
+
     def __init__(self, name, color, value, bonus=0):
         self.name = name
         self.type = type(self).__name__ + ':' + color[0].upper() + color[1:].lower()
@@ -35,52 +41,134 @@ class Color(Card):
     
     def get_color(self):
         return self.color
+    
+    def victory(self, to_compare: Card):
+        if to_compare.get_type() == self.get_type() and self.get_value() < to_compare.get_value() or 'Escape' not in to_compare.get_type:
+            return False
+        return True
         
 
-
 class Black(Card):
-    pass
+
+    def victory(self, to_compare: Card):
+        less_priorities = [
+            "Escape",
+            "Color"
+        ]
+        for priority in less_priorities:
+            if priority in to_compare.get_type() or to_compare.get_type() == self.get_type() and self.get_value() > to_compare.get_value():
+                return True
+        return False
 
 
 class Pirate(Card):
-    pass
+
+    def victory(self, to_compare: Card):
+        if 'SkullKing' not in to_compare.get_type() and to_compare.get_type() != self.get_type():
+            return True
+        return False
+
+
+class ScaryMary(Card):
+
+    def __init__(self, name, value, bonus=0):
+        self.name = name
+        self.type = type(self).__name__
+        self.value = value
+        self.bonus = bonus
+
+    def set_type(self, type):
+        self.type = type + ':' + self.get_type()
+
+    def victory(self, to_compare: Card):
+        if 'Pirate' in self.get_type():
+            if 'SkullKing' not in to_compare.get_type() and to_compare.get_type() != self.get_type():
+                return True
+        return False
 
 
 class Mermaid(Card):
+
     def get_bonus(self, kill: bool):
         self.bonus += 50
+
+    def victory(self, to_compare: Card):
+        if 'Pirate' not in to_compare.get_type() and to_compare.get_type() != self.get_type():
+            return True
+        return False
 
 
 class SkullKing(Card):
     
     def get_bonus(self, kills: int):
         self.bonus += kills * 30
+    
+    def victory(self, to_compare: Card):
+        if 'Mermaid' not in to_compare.get_type() and to_compare.get_type() != self.get_type():
+            return True
+        return False
 
 
 class PlayedCards:
 
     def __init__(self):
         self.cards = []
-        self.priorities = [
-            "Escape",
-            "Color",
-            "Black",
-            "Mermaid",
-            "Pirate",
-            "SkullKing"
-        ]
     
     def play_card(self, player: Player, card: Card):
         self.cards.append({"card" : card, "player" : player})
     
     def check(self):
-        pirates = False
-        mermaids = False
-        skull_king = False
+        pirates = {"card" : None, "present" : False}
+        mermaids = {"card" : None, "present" : False}
+        skullKing = {"card" : None, "present" : False}
+
         winner = self.cards[0]
+
+        if 'Pirate' in winner["card"].get_type():
+            pirates["card"] = winner
+            pirates["present"] = True
+
+        elif 'Mermaid' in winner["card"].get_type():
+            mermaids["card"] = winner
+            mermaids["present"] = True
+
+        elif 'SkullKing' in winner["card"].get_type():
+            skullKing["card"] = winner
+            skullKing["present"] = True
+
         for card in self.cards:
-            if self.priorities.index(card["card"].get_type()) > winner["card"].get_type():
-                winner = {"card" : card["card"], "player" : card["player"]}
-            elif self.priorities.index(card["card"].get_type()) == winner["card"].get_type():
-                if 'Color' in winner["card"].get_type() and winner["card"].get_value() < card["card"].get_value():
-                    winner = {"card" : card["card"], "player" : card["player"]}
+            if 'Pirate' in card["card"].get_type():
+                if card["card"].victory(winner["card"]):
+                    winner = card
+                    pirates["card"] = winner
+                    pirates["present"] = True
+
+            elif 'Mermaid' in card["card"].get_type():
+                if card["card"].victory(winner["card"]):
+                    winner = card
+                    mermaids["card"] = winner
+                    mermaids["present"] = True
+
+            elif 'SkullKing' in card["card"].get_type():
+                if card["card"].victory(winner["card"]):
+                    winner = card
+                    skullKing["card"] = winner
+                    skullKing["present"] = True
+            else:
+                if card["card"].victory(winner["card"]):
+                    winner = card
+        
+        if pirates["present"] and mermaids["present"] and skullKing["present"]:
+            winner = mermaids["card"]
+
+        elif pirates["present"] and skullKing["present"]:
+            winner = skullKing["card"]
+
+        elif pirates["present"] and mermaids["present"]:
+            winner = pirates["card"]
+
+        elif skullKing["present"] and mermaids["present"]:
+            winner = mermaids["card"]
+        
+        return winner
+    

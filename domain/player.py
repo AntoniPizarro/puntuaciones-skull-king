@@ -41,6 +41,12 @@ class Player:
 
         return round
 
+    def get_last_round(self):
+        if len(self.data["scores"]["rounds"]) > 0:
+            ind = len(self.data["scores"]["rounds"]) - 1
+            return self.data["scores"]["rounds"][ind]
+        return None
+
     def bet_round(self, num, bet):
         round = self.get_round(num)
         round["bet"] = bet
@@ -48,6 +54,10 @@ class Player:
     def wins_round(self, num, wins):
         round = self.get_round(num)
         round["wins"] = wins
+    
+    def win_trick(self, num):
+        round = self.get_round(num)
+        round["wins"] += 1
     
     def bonus_round(self, num, bonus):
         round = self.get_round(num)
