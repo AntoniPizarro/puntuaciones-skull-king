@@ -93,3 +93,5 @@ class Player:
     def get_maze(self):
         return self.data["maze"]
     
+    def get_data(self):
+        return self.data

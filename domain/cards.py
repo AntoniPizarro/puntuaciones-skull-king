@@ -20,6 +20,15 @@ class Card:
     
     def get_bonus(self):
         return self.bonus
+    
+    def get_data(self):
+        data = {
+            "name" : self.name,
+            "type" : self.type,
+            "value" : self.value,
+            "bonus" : self.bonus
+        }
+        return data
 
 
 class Escape(Card):
@@ -46,6 +55,16 @@ class Color(Card):
         if to_compare.get_type() == self.get_type() and self.get_value() < to_compare.get_value() or 'Escape' not in to_compare.get_type:
             return False
         return True
+
+    def get_data(self):
+        data = {
+            "name" : self.name,
+            "type" : self.type,
+            "color" : self.color,
+            "value" : self.value,
+            "bonus" : self.bonus
+        }
+        return data
         
 
 class Black(Card):
@@ -70,12 +89,6 @@ class Pirate(Card):
 
 
 class ScaryMary(Card):
-
-    def __init__(self, name, value, bonus=0):
-        self.name = name
-        self.type = type(self).__name__
-        self.value = value
-        self.bonus = bonus
 
     def set_type(self, type):
         self.type = type + ':' + self.get_type()
@@ -172,3 +185,5 @@ class PlayedCards:
         
         return winner
     
+    def get_data(self):
+        return self.cards

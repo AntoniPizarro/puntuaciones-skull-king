@@ -47,3 +47,6 @@ class Maze:
 
     def add_card(self, card: Card):
         self.cards.append(card)
+    
+    def get_data(self):
+        return self.cards
