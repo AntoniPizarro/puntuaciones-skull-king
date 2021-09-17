@@ -1,5 +1,5 @@
 from tkinter.constants import NO
-from player import Player
+from domain.player import Player
 
 class Card:
 
