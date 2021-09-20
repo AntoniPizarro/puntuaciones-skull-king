@@ -59,3 +59,42 @@ footer {
     display: inline;
     height: 100px;
 }
+
+#inputs {
+    text-align: center;
+}
+
+#username {
+    background:url(../../assets/img/Boton.png);
+    background-repeat:no-repeat;
+    background-size: 190px;
+    font-family: 'pirate-font';
+    font-size: larger;
+    padding: 15px;
+    height: 107px;
+    width: 160px;
+}
+
+#user-pass {
+    background:url(../../assets/img/Boton.png);
+    background-repeat:no-repeat;
+    background-size: 190px;
+    font-family: 'pirate-font';
+    font-size: larger;
+    padding: 15px;
+    height: 107px;
+    width: 160px;
+}
+
+#compr-cuen {
+    display: flex;
+}
+
+#compr-cuen img {
+    height: 100px;
+}
+
+#compr-cuen h1 {
+    font-family: 'pirate-font';
+    font-size: large;
+}
