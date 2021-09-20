@@ -37,3 +37,7 @@ function checkSesion() {
         throw new Error('Tu Browser no soporta sessionStorage!');
     }
 }
+
+function openPage(url) {
+    window.location.href = url;
+}
