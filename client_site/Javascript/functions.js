@@ -41,3 +41,17 @@ function checkSesion() {
 function openPage(url) {
     window.location.href = url;
 }
+
+function pruebas() {
+    console.log("Prueba");
+}
+
+function checkAccount() {
+    username = document.getElementById('username').value;
+    password = document.getElementById('user-pass').value;
+    if (username != "" && password != "") {
+        pruebas();
+    }else{
+        alert("");
+    }
+}
