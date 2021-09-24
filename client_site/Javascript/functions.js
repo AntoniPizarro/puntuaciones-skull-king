@@ -42,16 +42,51 @@ function openPage(url) {
     window.location.href = url;
 }
 
-function pruebas() {
-    console.log("Prueba");
+function pruebas(data) {
+    console.log(data);
 }
 
 function checkAccount() {
-    username = document.getElementById('username').value;
-    password = document.getElementById('user-pass').value;
+    let username = document.getElementById('username').value;
+    let password = document.getElementById('user-pass').value;
+    let data = {
+        "username": username,
+        "password": password
+    };
+    let newUser;
     if (username != "" && password != "") {
-        pruebas();
+        fetch(ip + '/users/add', {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            state = data["state"];
+            newUser = data["new"];
+            if (state) { // Conexion a BD satisfactoria
+                if (window.sessionStorage) {
+                    sessionStorage.setItem("username", username);
+                    sessionStorage.setItem("password", password);
+                }else {
+                    throw new Error('Tu Browser no soporta sessionStorage!');
+                }
+                if (!newUser) { // No es nuevo usuario
+                    let logging = confirm(data["new_user"] + ". ¿Desea iniciar sesión?");
+                    if (!logging) { // No desea iniciar sesion
+                        return 0;
+                    }
+                }
+                openPage("./maze.html");
+            }else {
+                alert(data["new_user"]);
+            }
+        });
     }else{
-        alert("");
+        alert("Debe rellenar los datos");
     }
 }

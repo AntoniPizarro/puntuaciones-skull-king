@@ -84,17 +84,22 @@ footer {
     padding: 15px;
     height: 107px;
     width: 160px;
+    margin-top: 10px;
 }
 
 #compr-cuen {
-    display: flex;
+    text-align: center;
+    position: relative;
 }
 
 #compr-cuen img {
     height: 100px;
+    padding: 10px;
 }
 
 #compr-cuen h1 {
     font-family: 'pirate-font';
     font-size: large;
+    position: absolute;
+    transform: translate(93%, -360%);
 }
